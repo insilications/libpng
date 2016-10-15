@@ -4,7 +4,7 @@
 #
 Name     : libpng
 Version  : 1.6.25
-Release  : 23
+Release  : 27
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.6.25.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.6.25.tar.xz
 Summary  : Loads and saves PNG files
@@ -14,7 +14,6 @@ Requires: libpng-bin
 Requires: libpng-lib
 Requires: libpng-doc
 BuildRequires : gdb
-BuildRequires : zlib-dev
 
 %description
 See the note about version numbers near the top of png.h
@@ -63,10 +62,10 @@ export LANG=C
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -falign-functions=32 -O3 -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -falign-functions=32 -O3 -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -falign-functions=32 -O3 -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -falign-functions=32 -O3 -fno-semantic-interposition "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
 %configure --disable-static
 make V=1  %{?_smp_mflags}
 
@@ -80,6 +79,19 @@ make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 %install
 rm -rf %{buildroot}
 %make_install
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+make clean
+%configure --disable-static --libdir=/usr/lib64/avx2
+make V=1  %{?_smp_mflags}
+make DESTDIR=%{buildroot} install-libLTLIBRARIES
+rm -f %{buildroot}/usr/lib64/avx2/*.la
+rm -f %{buildroot}/usr/lib64/avx2/*.lo
 
 %files
 %defattr(-,root,root,-)
@@ -98,6 +110,7 @@ rm -rf %{buildroot}
 /usr/include/libpng16/pngconf.h
 /usr/include/libpng16/pnglibconf.h
 /usr/lib64/*.so
+/usr/lib64/avx2/*.so
 /usr/lib64/pkgconfig/*.pc
 
 %files doc
@@ -108,3 +121,4 @@ rm -rf %{buildroot}
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/*.so.*
+/usr/lib64/avx2/*.so.*
