@@ -4,7 +4,7 @@
 #
 Name     : libpng
 Version  : 1.6.25
-Release  : 27
+Release  : 28
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.6.25.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.6.25.tar.xz
 Summary  : Loads and saves PNG files
@@ -62,10 +62,10 @@ export LANG=C
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition -mavx2 "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition -mavx2 "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition -mavx2 "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition -mavx2 "
 %configure --disable-static
 make V=1  %{?_smp_mflags}
 
@@ -82,10 +82,10 @@ rm -rf %{buildroot}
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition -mavx2 "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition -mavx2 "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition -mavx2 "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition -mavx2 "
 make clean
 %configure --disable-static --libdir=/usr/lib64/avx2
 make V=1  %{?_smp_mflags}
