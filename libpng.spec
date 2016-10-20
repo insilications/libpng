@@ -4,12 +4,12 @@
 #
 Name     : libpng
 Version  : 1.6.26
-Release  : 29
+Release  : 30
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.6.26.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.6.26.tar.xz
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
-License  : GPL-2.0 zlib-acknowledgement
+License  : GPL-2.0 Libpng zlib-acknowledgement
 Requires: libpng-bin
 Requires: libpng-lib
 Requires: libpng-doc
