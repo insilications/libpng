@@ -4,7 +4,7 @@
 #
 Name     : libpng
 Version  : 1.6.26
-Release  : 30
+Release  : 31
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.6.26.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.6.26.tar.xz
 Summary  : Loads and saves PNG files
@@ -87,7 +87,7 @@ export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interpositi
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition -mavx2 "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -flto -fno-semantic-interposition -mavx2 "
 make clean
-%configure --disable-static --libdir=/usr/lib64/avx2
+%configure --disable-static  --libdir=/usr/lib64/avx2
 make V=1  %{?_smp_mflags}
 make DESTDIR=%{buildroot} install-libLTLIBRARIES
 rm -f %{buildroot}/usr/lib64/avx2/*.la
