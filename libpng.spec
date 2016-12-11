@@ -4,7 +4,7 @@
 #
 Name     : libpng
 Version  : 1.6.26
-Release  : 34
+Release  : 35
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.6.26.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.6.26.tar.xz
 Summary  : Loads and saves PNG files
@@ -49,6 +49,7 @@ Summary: dev32 components for the libpng package.
 Group: Default
 Requires: libpng-lib32
 Requires: libpng-bin
+provides: pkgconfig(32libpng)
 
 %description dev32
 dev32 components for the libpng package.
