@@ -4,7 +4,7 @@
 #
 Name     : libpng
 Version  : 1.6.26
-Release  : 32
+Release  : 33
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.6.26.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.6.26.tar.xz
 Summary  : Loads and saves PNG files
@@ -109,9 +109,11 @@ rm -f %{buildroot}/usr/lib64/avx2/*.lo
 /usr/include/libpng16/png.h
 /usr/include/libpng16/pngconf.h
 /usr/include/libpng16/pnglibconf.h
-/usr/lib64/*.so
-/usr/lib64/avx2/*.so
-/usr/lib64/pkgconfig/*.pc
+/usr/lib64/avx2/libpng16.so
+/usr/lib64/libpng.so
+/usr/lib64/libpng16.so
+/usr/lib64/pkgconfig/libpng.pc
+/usr/lib64/pkgconfig/libpng16.pc
 
 %files doc
 %defattr(-,root,root,-)
@@ -120,5 +122,7 @@ rm -f %{buildroot}/usr/lib64/avx2/*.lo
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/*.so.*
-/usr/lib64/avx2/*.so.*
+/usr/lib64/avx2/libpng16.so.16
+/usr/lib64/avx2/libpng16.so.16.26.0
+/usr/lib64/libpng16.so.16
+/usr/lib64/libpng16.so.16.26.0
