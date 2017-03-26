@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xF54984BFA16C640F (glennrp+bmo@gmail.com)
 #
 Name     : libpng
-Version  : 1.6.28
-Release  : 39
-URL      : http://downloads.sourceforge.net/libpng/libpng-1.6.28.tar.xz
-Source0  : http://downloads.sourceforge.net/libpng/libpng-1.6.28.tar.xz
-Source99 : http://downloads.sourceforge.net/libpng/libpng-1.6.28.tar.xz.asc
+Version  : 1.6.29
+Release  : 40
+URL      : http://downloads.sourceforge.net/libpng/libpng-1.6.29.tar.xz
+Source0  : http://downloads.sourceforge.net/libpng/libpng-1.6.29.tar.xz
+Source99 : http://downloads.sourceforge.net/libpng/libpng-1.6.29.tar.xz.asc
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : GPL-2.0 Libpng zlib-acknowledgement
@@ -83,14 +83,14 @@ lib32 components for the libpng package.
 
 
 %prep
-%setup -q -n libpng-1.6.28
+%setup -q -n libpng-1.6.29
 pushd ..
-cp -a libpng-1.6.28 build32
+cp -a libpng-1.6.29 build32
 popd
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1487351300
+export SOURCE_DATE_EPOCH=1490541437
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -117,7 +117,7 @@ export no_proxy=localhost
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1487351300
+export SOURCE_DATE_EPOCH=1490541437
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -183,11 +183,11 @@ rm -f %{buildroot}/usr/lib64/avx2/*.lo
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/avx2/libpng16.so.16
-/usr/lib64/avx2/libpng16.so.16.28.0
+/usr/lib64/avx2/libpng16.so.16.29.0
 /usr/lib64/libpng16.so.16
-/usr/lib64/libpng16.so.16.28.0
+/usr/lib64/libpng16.so.16.29.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libpng16.so.16
-/usr/lib32/libpng16.so.16.28.0
+/usr/lib32/libpng16.so.16.29.0
