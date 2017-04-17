@@ -6,7 +6,7 @@
 #
 Name     : libpng
 Version  : 1.6.29
-Release  : 40
+Release  : 41
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.6.29.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.6.29.tar.xz
 Source99 : http://downloads.sourceforge.net/libpng/libpng-1.6.29.tar.xz.asc
@@ -90,7 +90,7 @@ popd
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1490541437
+export SOURCE_DATE_EPOCH=1492455358
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -117,7 +117,7 @@ export no_proxy=localhost
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1490541437
+export SOURCE_DATE_EPOCH=1492455358
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -137,15 +137,15 @@ export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-se
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition -fstack-protector-strong -march=haswell "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition -fstack-protector-strong -march=haswell "
 make clean
-%configure --disable-static--enable-intel-sse --libdir=/usr/lib64/avx2
+%configure --disable-static--enable-intel-sse --libdir=/usr/lib64/haswell
 make V=1  %{?_smp_mflags}
 make DESTDIR=%{buildroot} install-libLTLIBRARIES
-rm -f %{buildroot}/usr/lib64/avx2/*.la
-rm -f %{buildroot}/usr/lib64/avx2/*.lo
+rm -f %{buildroot}/usr/lib64/haswell/*.la
+rm -f %{buildroot}/usr/lib64/haswell/*.lo
 
 %files
 %defattr(-,root,root,-)
-/usr/lib64/avx2/libpng16.a
+/usr/lib64/haswell/libpng16.a
 
 %files bin
 %defattr(-,root,root,-)
@@ -160,7 +160,7 @@ rm -f %{buildroot}/usr/lib64/avx2/*.lo
 /usr/include/libpng16/png.h
 /usr/include/libpng16/pngconf.h
 /usr/include/libpng16/pnglibconf.h
-/usr/lib64/avx2/libpng16.so
+/usr/lib64/haswell/libpng16.so
 /usr/lib64/libpng.so
 /usr/lib64/libpng16.so
 /usr/lib64/pkgconfig/libpng.pc
@@ -182,8 +182,8 @@ rm -f %{buildroot}/usr/lib64/avx2/*.lo
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/avx2/libpng16.so.16
-/usr/lib64/avx2/libpng16.so.16.29.0
+/usr/lib64/haswell/libpng16.so.16
+/usr/lib64/haswell/libpng16.so.16.29.0
 /usr/lib64/libpng16.so.16
 /usr/lib64/libpng16.so.16.29.0
 
