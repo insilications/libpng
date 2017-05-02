@@ -6,7 +6,7 @@
 #
 Name     : libpng
 Version  : 1.6.29
-Release  : 42
+Release  : 43
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.6.29.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.6.29.tar.xz
 Source99 : http://downloads.sourceforge.net/libpng/libpng-1.6.29.tar.xz.asc
