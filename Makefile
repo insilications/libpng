@@ -1,5 +1,5 @@
 PKG_NAME := libpng
-URL := http://downloads.sourceforge.net/libpng/libpng-1.6.29.tar.xz
+URL := https://sourceforge.net/projects/libpng/files/libpng16/1.6.30/libpng-1.6.30.tar.xz
 
 
 include ../common/Makefile.common
