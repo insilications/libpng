@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xF54984BFA16C640F (glennrp+bmo@gmail.com)
 #
 Name     : libpng
-Version  : 1.6.30
-Release  : 45
-URL      : https://sourceforge.net/projects/libpng/files/libpng16/1.6.30/libpng-1.6.30.tar.xz
-Source0  : https://sourceforge.net/projects/libpng/files/libpng16/1.6.30/libpng-1.6.30.tar.xz
-Source99 : https://sourceforge.net/projects/libpng/files/libpng16/1.6.30/libpng-1.6.30.tar.xz.asc
+Version  : 1.6.31
+Release  : 46
+URL      : https://sourceforge.net/projects/libpng/files/libpng16/1.6.31/libpng-1.6.31.tar.xz
+Source0  : https://sourceforge.net/projects/libpng/files/libpng16/1.6.31/libpng-1.6.31.tar.xz
+Source99 : https://sourceforge.net/projects/libpng/files/libpng16/1.6.31/libpng-1.6.31.tar.xz.asc
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : GPL-2.0 Libpng zlib-acknowledgement
@@ -83,9 +83,9 @@ lib32 components for the libpng package.
 
 
 %prep
-%setup -q -n libpng-1.6.30
+%setup -q -n libpng-1.6.31
 pushd ..
-cp -a libpng-1.6.30 build32
+cp -a libpng-1.6.31 build32
 popd
 
 %build
@@ -93,7 +93,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1498773371
+export SOURCE_DATE_EPOCH=1501162864
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -120,7 +120,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1498773371
+export SOURCE_DATE_EPOCH=1501162864
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -186,11 +186,11 @@ rm -f %{buildroot}/usr/lib64/haswell/*.lo
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libpng16.so.16
-/usr/lib64/haswell/libpng16.so.16.30.0
+/usr/lib64/haswell/libpng16.so.16.31.0
 /usr/lib64/libpng16.so.16
-/usr/lib64/libpng16.so.16.30.0
+/usr/lib64/libpng16.so.16.31.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libpng16.so.16
-/usr/lib32/libpng16.so.16.30.0
+/usr/lib32/libpng16.so.16.31.0
