@@ -40,6 +40,8 @@ libpng16.so.16:png_get_compression_type
 libpng16.so.16:png_get_copyright
 libpng16.so.16:png_get_current_pass_number
 libpng16.so.16:png_get_current_row_number
+libpng16.so.16:png_get_eXIf
+libpng16.so.16:png_get_eXIf_1
 libpng16.so.16:png_get_error_ptr
 libpng16.so.16:png_get_filter_type
 libpng16.so.16:png_get_gAMA
@@ -156,6 +158,8 @@ libpng16.so.16:png_set_compression_method
 libpng16.so.16:png_set_compression_strategy
 libpng16.so.16:png_set_compression_window_bits
 libpng16.so.16:png_set_crc_action
+libpng16.so.16:png_set_eXIf
+libpng16.so.16:png_set_eXIf_1
 libpng16.so.16:png_set_error_fn
 libpng16.so.16:png_set_expand
 libpng16.so.16:png_set_expand_16
