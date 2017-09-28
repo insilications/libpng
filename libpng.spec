@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xF54984BFA16C640F (glennrp+bmo@gmail.com)
 #
 Name     : libpng
-Version  : 1.6.32
-Release  : 48
-URL      : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.32.tar.xz
-Source0  : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.32.tar.xz
-Source99 : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.32.tar.xz.asc
+Version  : 1.6.33
+Release  : 49
+URL      : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.33.tar.xz
+Source0  : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.33.tar.xz
+Source99 : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.33.tar.xz.asc
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : GPL-2.0 zlib-acknowledgement
@@ -83,9 +83,12 @@ lib32 components for the libpng package.
 
 
 %prep
-%setup -q -n libpng-1.6.32
+%setup -q -n libpng-1.6.33
 pushd ..
-cp -a libpng-1.6.32 build32
+cp -a libpng-1.6.33 build32
+popd
+pushd ..
+cp -a libpng-1.6.33 buildavx2
 popd
 
 %build
@@ -93,14 +96,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1503775009
+export SOURCE_DATE_EPOCH=1506642334
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -fstack-protector-strong "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -fstack-protector-strong "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -fstack-protector-strong "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -fstack-protector-strong "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong "
 %configure --disable-static --enable-intel-sse --enable-hardware-optimizations
 make V=1  %{?_smp_mflags}
 
@@ -112,6 +115,13 @@ export LDFLAGS="$LDFLAGS -m32"
 %configure --disable-static --enable-intel-sse --enable-hardware-optimizations   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make V=1  %{?_smp_mflags}
 popd
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=haswell"
+export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
+export LDFLAGS="$LDFLAGS -m64 -march=haswell"
+%configure --disable-static --enable-intel-sse --enable-hardware-optimizations   --libdir=/usr/lib64/haswell --bindir=/usr/bin/haswell
+make V=1  %{?_smp_mflags}
+popd
 %check
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
@@ -120,7 +130,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1503775009
+export SOURCE_DATE_EPOCH=1506642334
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -131,27 +141,22 @@ for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
 popd
+pushd ../buildavx2/
 %make_install
-export AR=gcc-ar
-export RANLIB=gcc-ranlib
-export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -fstack-protector-strong -march=haswell "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -fstack-protector-strong -march=haswell "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -fstack-protector-strong -march=haswell "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -fstack-protector-strong -march=haswell "
-make clean
-%configure --disable-static--enable-intel-sse --enable-hardware-optimizations --libdir=/usr/lib64/haswell
-make V=1  %{?_smp_mflags}
-make DESTDIR=%{buildroot} install-libLTLIBRARIES
-rm -f %{buildroot}/usr/lib64/haswell/*.la
-rm -f %{buildroot}/usr/lib64/haswell/*.lo
+popd
+%make_install
 
 %files
 %defattr(-,root,root,-)
-/usr/lib64/haswell/libpng16.a
+/usr/lib64/haswell/pkgconfig/libpng.pc
+/usr/lib64/haswell/pkgconfig/libpng16.pc
 
 %files bin
 %defattr(-,root,root,-)
+/usr/bin/haswell/libpng-config
+/usr/bin/haswell/libpng16-config
+/usr/bin/haswell/png-fix-itxt
+/usr/bin/haswell/pngfix
 /usr/bin/libpng-config
 /usr/bin/libpng16-config
 /usr/bin/png-fix-itxt
@@ -163,6 +168,7 @@ rm -f %{buildroot}/usr/lib64/haswell/*.lo
 /usr/include/libpng16/png.h
 /usr/include/libpng16/pngconf.h
 /usr/include/libpng16/pnglibconf.h
+/usr/lib64/haswell/libpng.so
 /usr/lib64/haswell/libpng16.so
 /usr/lib64/libpng.so
 /usr/lib64/libpng16.so
@@ -186,11 +192,11 @@ rm -f %{buildroot}/usr/lib64/haswell/*.lo
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libpng16.so.16
-/usr/lib64/haswell/libpng16.so.16.32.0
+/usr/lib64/haswell/libpng16.so.16.33.0
 /usr/lib64/libpng16.so.16
-/usr/lib64/libpng16.so.16.32.0
+/usr/lib64/libpng16.so.16.33.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libpng16.so.16
-/usr/lib32/libpng16.so.16.32.0
+/usr/lib32/libpng16.so.16.33.0
