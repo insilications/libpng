@@ -5,14 +5,14 @@
 # Source0 file verified with key 0xF54984BFA16C640F (glennrp+bmo@gmail.com)
 #
 Name     : libpng
-Version  : 1.6.33
-Release  : 49
-URL      : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.33.tar.xz
-Source0  : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.33.tar.xz
-Source99 : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.33.tar.xz.asc
+Version  : 1.6.34
+Release  : 50
+URL      : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.34.tar.xz
+Source0  : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.34.tar.xz
+Source99 : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.34.tar.xz.asc
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
-License  : GPL-2.0 zlib-acknowledgement
+License  : GPL-2.0 Libpng zlib-acknowledgement
 Requires: libpng-bin
 Requires: libpng-lib
 Requires: libpng-doc
@@ -83,12 +83,12 @@ lib32 components for the libpng package.
 
 
 %prep
-%setup -q -n libpng-1.6.33
+%setup -q -n libpng-1.6.34
 pushd ..
-cp -a libpng-1.6.33 build32
+cp -a libpng-1.6.34 build32
 popd
 pushd ..
-cp -a libpng-1.6.33 buildavx2
+cp -a libpng-1.6.34 buildavx2
 popd
 
 %build
@@ -96,7 +96,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1506642334
+export SOURCE_DATE_EPOCH=1506681923
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -130,7 +130,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1506642334
+export SOURCE_DATE_EPOCH=1506681923
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -192,11 +192,11 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libpng16.so.16
-/usr/lib64/haswell/libpng16.so.16.33.0
+/usr/lib64/haswell/libpng16.so.16.34.0
 /usr/lib64/libpng16.so.16
-/usr/lib64/libpng16.so.16.33.0
+/usr/lib64/libpng16.so.16.34.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libpng16.so.16
-/usr/lib32/libpng16.so.16.33.0
+/usr/lib32/libpng16.so.16.34.0
