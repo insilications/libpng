@@ -6,7 +6,7 @@
 #
 Name     : libpng
 Version  : 1.6.34
-Release  : 51
+Release  : 52
 URL      : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.34.tar.xz
 Source0  : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.34.tar.xz
 Source99 : ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.34.tar.xz.asc
