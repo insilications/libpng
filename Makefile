@@ -1,5 +1,5 @@
 PKG_NAME := libpng
-URL = ftp://ftp-osl.osuosl.org/pub/libpng/src/libpng16/libpng-1.6.34.tar.xz
+URL = https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/libpng-1.6.35.tar.xz
 ARCHIVES = 
 
 include ../common/Makefile.common
