@@ -4,12 +4,12 @@
 #
 Name     : libpng
 Version  : 1.6.36
-Release  : 55
+Release  : 56
 URL      : https://sourceforge.net/projects/libpng/files/libpng16/1.6.36/libpng-1.6.36.tar.xz
 Source0  : https://sourceforge.net/projects/libpng/files/libpng16/1.6.36/libpng-1.6.36.tar.xz
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
-License  : GPL-2.0 zlib-acknowledgement
+License  : GPL-2.0 Libpng zlib-acknowledgement
 Requires: libpng-bin = %{version}-%{release}
 Requires: libpng-lib = %{version}-%{release}
 Requires: libpng-license = %{version}-%{release}
@@ -107,7 +107,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1543764769
+export SOURCE_DATE_EPOCH=1547506306
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -120,10 +120,10 @@ make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export ASFLAGS="$ASFLAGS --32"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-export LDFLAGS="$LDFLAGS -m32"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 %configure --disable-static --enable-intel-sse --enable-hardware-optimizations   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
@@ -147,9 +147,10 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1543764769
+export SOURCE_DATE_EPOCH=1547506306
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libpng
+cp LICENSE %{buildroot}/usr/share/package-licenses/libpng/LICENSE
 cp contrib/gregbook/COPYING %{buildroot}/usr/share/package-licenses/libpng/contrib_gregbook_COPYING
 cp contrib/gregbook/LICENSE %{buildroot}/usr/share/package-licenses/libpng/contrib_gregbook_LICENSE
 pushd ../build32/
@@ -216,6 +217,7 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
+/usr/share/package-licenses/libpng/LICENSE
 /usr/share/package-licenses/libpng/contrib_gregbook_COPYING
 /usr/share/package-licenses/libpng/contrib_gregbook_LICENSE
 
