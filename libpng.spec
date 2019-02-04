@@ -4,7 +4,7 @@
 #
 Name     : libpng
 Version  : 1.6.36
-Release  : 56
+Release  : 57
 URL      : https://sourceforge.net/projects/libpng/files/libpng16/1.6.36/libpng-1.6.36.tar.xz
 Source0  : https://sourceforge.net/projects/libpng/files/libpng16/1.6.36/libpng-1.6.36.tar.xz
 Summary  : Loads and saves PNG files
@@ -21,6 +21,7 @@ BuildRequires : gdb
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : zlib-dev32
+Patch1: CVE-2019-7317.patch
 
 %description
 ===================================================
@@ -95,6 +96,7 @@ man components for the libpng package.
 
 %prep
 %setup -q -n libpng-1.6.36
+%patch1 -p1
 pushd ..
 cp -a libpng-1.6.36 build32
 popd
@@ -107,7 +109,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1547506306
+export SOURCE_DATE_EPOCH=1549301718
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -147,7 +149,7 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1547506306
+export SOURCE_DATE_EPOCH=1549301718
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libpng
 cp LICENSE %{buildroot}/usr/share/package-licenses/libpng/LICENSE
