@@ -4,10 +4,10 @@
 #
 Name     : libpng
 Version  : 1.6.37
-Release  : 58
+Release  : 59
 URL      : https://sourceforge.net/projects/libpng/files/libpng16/1.6.37/libpng-1.6.37.tar.xz
 Source0  : https://sourceforge.net/projects/libpng/files/libpng16/1.6.37/libpng-1.6.37.tar.xz
-Summary  : A collection of routines used to create PNG format graphics files
+Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : GPL-2.0 Libpng MIT zlib-acknowledgement
 Requires: libpng-bin = %{version}-%{release}
@@ -24,16 +24,9 @@ BuildRequires : glibc-libc32
 BuildRequires : zlib-dev32
 
 %description
-PngMinus
---------
-(copyright Willem van Schaik, 1999-2019)
-Some history
-------------
-Soon after the creation of PNG in 1995, the need was felt for a set of
-pnmtopng / pngtopnm utilities. Independently Alexander Lehmann and I
-(Willem van Schaik) started such a project. Luckily we discovered this
-and merged the two, which later became part of NetPBM, available from
-SourceForge.
+=================================================
+See the note about version numbers near the top of png.h.
+See INSTALL for instructions on how to install libpng.
 
 %package bin
 Summary: bin components for the libpng package.
@@ -114,24 +107,25 @@ popd
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1555312908
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1568865323
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fcf-protection=full -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure --disable-static --enable-intel-sse --enable-hardware-optimizations
 make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure --disable-static --enable-intel-sse --enable-hardware-optimizations   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
@@ -144,7 +138,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=haswell"
 make  %{?_smp_mflags}
 popd
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -155,7 +149,7 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1555312908
+export SOURCE_DATE_EPOCH=1568865323
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libpng
 cp LICENSE %{buildroot}/usr/share/package-licenses/libpng/LICENSE
@@ -190,10 +184,12 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
 /usr/include/libpng16/png.h
 /usr/include/libpng16/pngconf.h
 /usr/include/libpng16/pnglibconf.h
+/usr/include/png.h
+/usr/include/pngconf.h
+/usr/include/pnglibconf.h
 /usr/lib64/haswell/libpng.so
 /usr/lib64/haswell/libpng16.so
 /usr/lib64/libpng.so
