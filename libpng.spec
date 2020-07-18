@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : libpng
 Version  : 1.6.37
-Release  : 2
+Release  : 3
 URL      : file:///insilications/build/clearlinux/packages/libpng/libpng-v1.6.37.zip
 Source0  : file:///insilications/build/clearlinux/packages/libpng/libpng-v1.6.37.zip
 Summary  : Loads and saves PNG files
@@ -94,7 +94,7 @@ unset http_proxy
 unset https_proxy
 unset no_proxy
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1595047782
+export SOURCE_DATE_EPOCH=1595086798
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -164,7 +164,7 @@ unset no_proxy
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1595047782
+export SOURCE_DATE_EPOCH=1595086798
 rm -rf %{buildroot}
 %make_install
 
