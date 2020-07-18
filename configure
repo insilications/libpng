@@ -1,1 +1,1 @@
---enable-intel-sse --enable-hardware-optimizations
+--enable-shared --enable-static --enable-intel-sse --enable-hardware-optimizations --disable-maintainer-mode

@@ -3,4 +3,8 @@
 # desirable. One name per line, no whitespace.
 #
 gdb
-zlib-dev32
+zlib-dev
+zlib-staticdev
+gcc-dev
+glibc-dev
+binutils-dev
