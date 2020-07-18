@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : libpng
 Version  : 1.6.37
-Release  : 1
+Release  : 2
 URL      : file:///insilications/build/clearlinux/packages/libpng/libpng-v1.6.37.zip
 Source0  : file:///insilications/build/clearlinux/packages/libpng/libpng-v1.6.37.zip
 Summary  : Loads and saves PNG files
@@ -14,6 +14,8 @@ License  : zlib-acknowledgement
 Requires: libpng-bin = %{version}-%{release}
 Requires: libpng-lib = %{version}-%{release}
 Requires: libpng-man = %{version}-%{release}
+Requires: zlib-dev
+Requires: zlib-staticdev
 BuildRequires : binutils-dev
 BuildRequires : buildreq-cmake
 BuildRequires : gcc-dev
@@ -92,7 +94,7 @@ unset http_proxy
 unset https_proxy
 unset no_proxy
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1595046909
+export SOURCE_DATE_EPOCH=1595047782
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -135,6 +137,7 @@ find . -type f -name 'config.status' -exec touch {} \;
 ## make_prepend end
 make  %{?_smp_mflags}
 
+make VERBOSE=1 V=1 %{?_smp_mflags} test || :
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 make clean
 export CFLAGS="${CFLAGS_USE}"
@@ -161,7 +164,7 @@ unset no_proxy
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1595046909
+export SOURCE_DATE_EPOCH=1595047782
 rm -rf %{buildroot}
 %make_install
 
@@ -183,6 +186,8 @@ rm -rf %{buildroot}
 /usr/include/png.h
 /usr/include/pngconf.h
 /usr/include/pnglibconf.h
+/usr/lib64/libpng.so
+/usr/lib64/libpng16.so
 /usr/lib64/pkgconfig/libpng.pc
 /usr/lib64/pkgconfig/libpng16.pc
 /usr/share/man/man3/libpng.3
@@ -190,8 +195,6 @@ rm -rf %{buildroot}
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/libpng.so
-/usr/lib64/libpng16.so
 /usr/lib64/libpng16.so.16
 /usr/lib64/libpng16.so.16.38.0
 
