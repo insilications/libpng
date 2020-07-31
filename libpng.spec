@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : libpng
 Version  : 1.6.37
-Release  : 3
+Release  : 4
 URL      : file:///insilications/build/clearlinux/packages/libpng/libpng-v1.6.37.zip
 Source0  : file:///insilications/build/clearlinux/packages/libpng/libpng-v1.6.37.zip
 Summary  : Loads and saves PNG files
@@ -18,10 +18,17 @@ Requires: zlib-dev
 Requires: zlib-staticdev
 BuildRequires : binutils-dev
 BuildRequires : buildreq-cmake
+BuildRequires : findutils
 BuildRequires : gcc-dev
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
 BuildRequires : gdb
 BuildRequires : glibc-dev
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : zlib-dev
+BuildRequires : zlib-dev32
 BuildRequires : zlib-staticdev
 # Suppress stripping binaries
 %define __strip /bin/true
@@ -52,12 +59,31 @@ Requires: libpng = %{version}-%{release}
 dev components for the libpng package.
 
 
+%package dev32
+Summary: dev32 components for the libpng package.
+Group: Default
+Requires: libpng-lib32 = %{version}-%{release}
+Requires: libpng-bin = %{version}-%{release}
+Requires: libpng-dev = %{version}-%{release}
+
+%description dev32
+dev32 components for the libpng package.
+
+
 %package lib
 Summary: lib components for the libpng package.
 Group: Libraries
 
 %description lib
 lib components for the libpng package.
+
+
+%package lib32
+Summary: lib32 components for the libpng package.
+Group: Default
+
+%description lib32
+lib32 components for the libpng package.
 
 
 %package man
@@ -77,9 +103,21 @@ Requires: libpng-dev = %{version}-%{release}
 staticdev components for the libpng package.
 
 
+%package staticdev32
+Summary: staticdev32 components for the libpng package.
+Group: Default
+Requires: libpng-dev = %{version}-%{release}
+
+%description staticdev32
+staticdev32 components for the libpng package.
+
+
 %prep
 %setup -q -n libpng-v1.6.37
 cd %{_builddir}/libpng-v1.6.37
+pushd ..
+cp -a libpng-v1.6.37 build32
+popd
 
 %build
 ## build_prepend content
@@ -94,7 +132,7 @@ unset http_proxy
 unset https_proxy
 unset no_proxy
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1595086798
+export SOURCE_DATE_EPOCH=1596173342
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -156,16 +194,53 @@ find . -type f -name 'config.status' -exec touch {} \;
 ## make_prepend end
 make  %{?_smp_mflags}
 
+pushd ../build32/
+## build_prepend content
+find . -type f -name 'configure*' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name '*.ac' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name 'libtool*' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name '*.m4' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+echo "AM_MAINTAINER_MODE([disable])" >> configure.ac
+find . -type f -name 'config.status' -exec touch {} \;
+## build_prepend end
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
+%autogen  --enable-shared --enable-static --enable-intel-sse --enable-hardware-optimizations --disable-maintainer-mode  --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+## make_prepend content
+find . -type f -name 'Makefile*' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name 'configure*' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name '*.ac' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name 'libtool*' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name '*.m4' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name 'config.status' -exec touch {} \;
+## make_prepend end
+make  %{?_smp_mflags}
+popd
+
 %check
 export LANG=C.UTF-8
 unset http_proxy
 unset https_proxy
 unset no_proxy
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+cd ../build32;
+make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1595086798
+export SOURCE_DATE_EPOCH=1596173342
 rm -rf %{buildroot}
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 %make_install
 
 %files
@@ -193,10 +268,24 @@ rm -rf %{buildroot}
 /usr/share/man/man3/libpng.3
 /usr/share/man/man3/libpngpf.3
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libpng.so
+/usr/lib32/libpng16.so
+/usr/lib32/pkgconfig/32libpng.pc
+/usr/lib32/pkgconfig/32libpng16.pc
+/usr/lib32/pkgconfig/libpng.pc
+/usr/lib32/pkgconfig/libpng16.pc
+
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libpng16.so.16
 /usr/lib64/libpng16.so.16.38.0
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libpng16.so.16
+/usr/lib32/libpng16.so.16.38.0
 
 %files man
 %defattr(0644,root,root,0755)
@@ -206,3 +295,8 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 /usr/lib64/libpng.a
 /usr/lib64/libpng16.a
+
+%files staticdev32
+%defattr(-,root,root,-)
+/usr/lib32/libpng.a
+/usr/lib32/libpng16.a
