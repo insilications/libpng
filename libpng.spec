@@ -4,7 +4,7 @@
 #
 Name     : libpng
 Version  : 1.6.37
-Release  : 60
+Release  : 61
 URL      : https://sourceforge.net/projects/libpng/files/libpng16/1.6.37/libpng-1.6.37.tar.xz
 Source0  : https://sourceforge.net/projects/libpng/files/libpng16/1.6.37/libpng-1.6.37.tar.xz
 Summary  : Loads and saves PNG files
@@ -96,6 +96,7 @@ man components for the libpng package.
 
 %prep
 %setup -q -n libpng-1.6.37
+cd %{_builddir}/libpng-1.6.37
 pushd ..
 cp -a libpng-1.6.37 build32
 popd
@@ -108,14 +109,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568865323
+export SOURCE_DATE_EPOCH=1604898788
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure --disable-static --enable-intel-sse --enable-hardware-optimizations
 make  %{?_smp_mflags}
@@ -133,6 +134,8 @@ unset PKG_CONFIG_PATH
 pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=haswell"
 export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
+export FFLAGS="$FFLAGS -m64 -march=haswell"
+export FCFLAGS="$FCFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
 %configure --disable-static --enable-intel-sse --enable-hardware-optimizations
 make  %{?_smp_mflags}
@@ -142,20 +145,20 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+make %{?_smp_mflags} check || :
 cd ../build32;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
+make %{?_smp_mflags} check || : || :
 cd ../buildavx2;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
+make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1568865323
+export SOURCE_DATE_EPOCH=1604898788
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libpng
-cp LICENSE %{buildroot}/usr/share/package-licenses/libpng/LICENSE
-cp contrib/gregbook/COPYING %{buildroot}/usr/share/package-licenses/libpng/contrib_gregbook_COPYING
-cp contrib/gregbook/LICENSE %{buildroot}/usr/share/package-licenses/libpng/contrib_gregbook_LICENSE
-cp contrib/pngminus/LICENSE.txt %{buildroot}/usr/share/package-licenses/libpng/contrib_pngminus_LICENSE.txt
+cp %{_builddir}/libpng-1.6.37/LICENSE %{buildroot}/usr/share/package-licenses/libpng/fc3951ba26fe1914759f605696a1d23e3b41766f
+cp %{_builddir}/libpng-1.6.37/contrib/gregbook/COPYING %{buildroot}/usr/share/package-licenses/libpng/80b6f4fcbc19d7431482cba012e86f587828c1ba
+cp %{_builddir}/libpng-1.6.37/contrib/gregbook/LICENSE %{buildroot}/usr/share/package-licenses/libpng/aa4b9207aaff26bc16c562d6cd766a9eed49af1e
+cp %{_builddir}/libpng-1.6.37/contrib/pngminus/LICENSE.txt %{buildroot}/usr/share/package-licenses/libpng/29883b5b9150592328072643614229f6d320bc6e
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -222,10 +225,10 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/libpng/LICENSE
-/usr/share/package-licenses/libpng/contrib_gregbook_COPYING
-/usr/share/package-licenses/libpng/contrib_gregbook_LICENSE
-/usr/share/package-licenses/libpng/contrib_pngminus_LICENSE.txt
+/usr/share/package-licenses/libpng/29883b5b9150592328072643614229f6d320bc6e
+/usr/share/package-licenses/libpng/80b6f4fcbc19d7431482cba012e86f587828c1ba
+/usr/share/package-licenses/libpng/aa4b9207aaff26bc16c562d6cd766a9eed49af1e
+/usr/share/package-licenses/libpng/fc3951ba26fe1914759f605696a1d23e3b41766f
 
 %files man
 %defattr(0644,root,root,0755)
