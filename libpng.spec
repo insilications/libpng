@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : libpng
-Version  : 1.6.37
-Release  : 5
-URL      : file:///insilications/build/clearlinux/packages/libpng/libpng-v1.6.37.tar.gz
-Source0  : file:///insilications/build/clearlinux/packages/libpng/libpng-v1.6.37.tar.gz
+Version  : 1.00
+Release  : 6
+URL      : file:///insilications/build/clearlinux/packages/libpng/libpng-v1.00.tar.gz
+Source0  : file:///insilications/build/clearlinux/packages/libpng/libpng-v1.00.tar.gz
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : zlib-acknowledgement
@@ -106,7 +106,7 @@ staticdev components for the libpng package.
 %package staticdev32
 Summary: staticdev32 components for the libpng package.
 Group: Default
-Requires: libpng-dev = %{version}-%{release}
+Requires: libpng-dev32 = %{version}-%{release}
 
 %description staticdev32
 staticdev32 components for the libpng package.
@@ -131,8 +131,9 @@ popd
 unset http_proxy
 unset https_proxy
 unset no_proxy
+export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1598783992
+export SOURCE_DATE_EPOCH=1611837941
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -149,14 +150,11 @@ export CFFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl
 #
 export LDFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -fno-common -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -fPIC"
 #
-export AR=gcc-ar
-export RANLIB=gcc-ranlib
-export NM=gcc-nm
+export AR=/usr/bin/gcc-ar
+export RANLIB=/usr/bin/gcc-ranlib
+export NM=/usr/bin/gcc-nm
 #export CCACHE_DISABLE=1
 ## altflags1 end
-##
-%define _lto_cflags 1
-##
 export CFLAGS="${CFLAGS_GENERATE}"
 export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}"
@@ -193,17 +191,9 @@ export LDFLAGS="${LDFLAGS_USE}"
 make  %{?_smp_mflags}
 
 pushd ../build32/
-## build_prepend content
-#find . -type f -name 'configure*' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-#find . -type f -name '*.ac' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-#find . -type f -name 'libtool*' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-#find . -type f -name '*.m4' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-#echo "AM_MAINTAINER_MODE([disable])" >> configure.ac
-#find . -type f -name 'config.status' -exec touch {} \;
-## build_prepend end
-export CFLAGS="-g -O2 -fuse-linker-plugin -pipe"
-export CXXFLAGS="-g -O2 -fuse-linker-plugin -fvisibility-inlines-hidden -pipe"
-export LDFLAGS="-g -O2 -fuse-linker-plugin -pipe"
+export CFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
+export CXXFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -fvisibility-inlines-hidden -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
+export LDFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -213,7 +203,7 @@ export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-%autogen  --enable-shared --enable-static --enable-intel-sse --enable-hardware-optimizations --disable-maintainer-mode  --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+%autogen  --enable-shared --enable-static --enable-intel-sse --enable-hardware-optimizations --disable-maintainer-mode --enable-shared --enable-static --enable-intel-sse --enable-hardware-optimizations --disable-maintainer-mode --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 ## make_prepend content
 #find . -type f -name 'Makefile*' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 #find . -type f -name 'configure*' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
@@ -230,12 +220,13 @@ export LANG=C.UTF-8
 unset http_proxy
 unset https_proxy
 unset no_proxy
+export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 make %{?_smp_mflags} check || :
 cd ../build32;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1598783992
+export SOURCE_DATE_EPOCH=1611837941
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32

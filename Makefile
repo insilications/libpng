@@ -1,5 +1,5 @@
 PKG_NAME := libpng
-URL = https://git.code.sf.net/p/libpng/code
+URL = https://github.com/glennrp/libpng.git
 ARCHIVES = 
 
 include ../common/Makefile.common
