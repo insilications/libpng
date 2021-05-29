@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : libpng
 Version  : 1.6.37
-Release  : 505
+Release  : 511
 URL      : file:///aot/build/clearlinux/packages/libpng/libpng-v1.6.37.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/libpng/libpng-v1.6.37.tar.gz
 Summary  : Loads and saves PNG files
@@ -141,7 +141,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1622251705
+export SOURCE_DATE_EPOCH=1622328577
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -249,7 +249,7 @@ make  %{?_smp_mflags}    V=1 VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1622251705
+export SOURCE_DATE_EPOCH=1622328577
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -264,6 +264,9 @@ popd
 ## install_append content
 install -dm 0755 %{buildroot}/usr/lib64/haswell/ || :
 cp --archive %{buildroot}/usr/lib64/lib*.so* %{buildroot}/usr/lib64/haswell/ || :
+#
+install -dm 0755 %{buildroot}/usr/include/libpng/ || :
+cp --archive %{buildroot}/usr/include/*.h %{buildroot}/usr/include/libpng/ || :
 ## install_append end
 
 %files
@@ -278,6 +281,9 @@ cp --archive %{buildroot}/usr/lib64/lib*.so* %{buildroot}/usr/lib64/haswell/ || 
 
 %files dev
 %defattr(-,root,root,-)
+/usr/include/libpng/png.h
+/usr/include/libpng/pngconf.h
+/usr/include/libpng/pnglibconf.h
 /usr/include/libpng16/png.h
 /usr/include/libpng16/pngconf.h
 /usr/include/libpng16/pnglibconf.h
