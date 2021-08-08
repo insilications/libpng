@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : libpng
 Version  : 1.6.37
-Release  : 513
+Release  : 514
 URL      : file:///aot/build/clearlinux/packages/libpng/libpng-v1.6.37.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/libpng/libpng-v1.6.37.tar.gz
 Summary  : Loads and saves PNG files
@@ -123,8 +123,8 @@ staticdev32 components for the libpng package.
 %prep
 %setup -q -n libpng
 cd %{_builddir}/libpng
-pushd ..
-cp -a libpng build32
+pushd %{_builddir}
+cp -a %{_builddir}/libpng build32
 popd
 
 %build
@@ -141,7 +141,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1622329719
+export SOURCE_DATE_EPOCH=1628431280
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -208,8 +208,8 @@ export LDFLAGS="${LDFLAGS_GENERATE}"
 ## make_prepend end
 make  %{?_smp_mflags}    V=1 VERBOSE=1
 
-make VERBOSE=1 V=1 %{?_smp_mflags} check || :
-make clean
+make -j1 VERBOSE=1 V=1 check || :
+make clean || :
 echo USED > statuspgo
 fi
 if [ -f statuspgo ]; then
@@ -232,14 +232,18 @@ make  %{?_smp_mflags}    V=1 VERBOSE=1
 fi
 
 pushd ../build32/
-export CFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
-export CXXFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -fvisibility-inlines-hidden -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
-export LDFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 unset LD_LIBRARY_PATH
+unset LIBRARY_PATH
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+unset FCFLAGS
+unset FFLAGS
+unset CFFLAGS
+export CFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
+export CXXFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -fvisibility-inlines-hidden -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
+export LDFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -249,7 +253,7 @@ make  %{?_smp_mflags}    V=1 VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1622329719
+export SOURCE_DATE_EPOCH=1628431280
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
