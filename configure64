@@ -1,4 +1,4 @@
---enable-shared
+--disable-shared
 --enable-static
 --enable-intel-sse
 --enable-hardware-optimizations
