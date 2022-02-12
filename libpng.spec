@@ -11,6 +11,9 @@ Source0  : file:///aot/build/clearlinux/packages/libpng/libpng-v1.7.88.tar.gz
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : zlib-acknowledgement
+Requires: libpng-bin = %{version}-%{release}
+Requires: libpng-lib = %{version}-%{release}
+Requires: libpng-man = %{version}-%{release}
 Requires: zlib-dev
 Requires: zlib-staticdev
 BuildRequires : binutils-dev
@@ -43,6 +46,70 @@ BuildRequires : zlib-staticdev
 See the note about version numbers near the top of png.h.
 See INSTALL for instructions on how to install libpng.
 
+%package bin
+Summary: bin components for the libpng package.
+Group: Binaries
+
+%description bin
+bin components for the libpng package.
+
+
+%package dev
+Summary: dev components for the libpng package.
+Group: Development
+Requires: libpng-lib = %{version}-%{release}
+Requires: libpng-bin = %{version}-%{release}
+Provides: libpng-devel = %{version}-%{release}
+Requires: libpng = %{version}-%{release}
+
+%description dev
+dev components for the libpng package.
+
+
+%package dev32
+Summary: dev32 components for the libpng package.
+Group: Default
+Requires: libpng-lib32 = %{version}-%{release}
+Requires: libpng-bin = %{version}-%{release}
+Requires: libpng-dev = %{version}-%{release}
+
+%description dev32
+dev32 components for the libpng package.
+
+
+%package lib
+Summary: lib components for the libpng package.
+Group: Libraries
+
+%description lib
+lib components for the libpng package.
+
+
+%package lib32
+Summary: lib32 components for the libpng package.
+Group: Default
+
+%description lib32
+lib32 components for the libpng package.
+
+
+%package man
+Summary: man components for the libpng package.
+Group: Default
+
+%description man
+man components for the libpng package.
+
+
+%package staticdev
+Summary: staticdev components for the libpng package.
+Group: Default
+Requires: libpng-dev = %{version}-%{release}
+
+%description staticdev
+staticdev components for the libpng package.
+
+
 %prep
 %setup -q -n libpng
 cd %{_builddir}/libpng
@@ -67,7 +134,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1644685407
+export SOURCE_DATE_EPOCH=1644685763
 ## build_prepend content
 #find . -type f -name 'configure*' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 #find . -type f -name '*.ac' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
@@ -357,7 +424,7 @@ fi
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1644685407
+export SOURCE_DATE_EPOCH=1644685763
 rm -rf %{buildroot}
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -577,3 +644,64 @@ cp --archive %{buildroot}/usr/include/libpng16/*.h %{buildroot}/usr/include/libp
 
 %files
 %defattr(-,root,root,-)
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/libpng-config
+/usr/bin/libpng16-config
+/usr/bin/png-fix-itxt
+/usr/bin/pngfix
+
+%files dev
+%defattr(-,root,root,-)
+/usr/include/libpng/png.h
+/usr/include/libpng/pngconf.h
+/usr/include/libpng/pnglibconf.h
+/usr/include/libpng16/png.h
+/usr/include/libpng16/pngconf.h
+/usr/include/libpng16/pnglibconf.h
+/usr/include/png.h
+/usr/include/pngconf.h
+/usr/include/pnglibconf.h
+/usr/lib64/haswell/libpng.so
+/usr/lib64/haswell/libpng16.so
+/usr/lib64/libpng.la
+/usr/lib64/libpng.so
+/usr/lib64/libpng16.la
+/usr/lib64/libpng16.so
+/usr/lib64/pkgconfig/libpng.pc
+/usr/lib64/pkgconfig/libpng16.pc
+
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libpng.la
+/usr/lib32/libpng.so
+/usr/lib32/libpng16.la
+/usr/lib32/libpng16.so
+/usr/lib32/pkgconfig/32libpng.pc
+/usr/lib32/pkgconfig/32libpng16.pc
+/usr/lib32/pkgconfig/libpng.pc
+/usr/lib32/pkgconfig/libpng16.pc
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/haswell/libpng16.so.16
+/usr/lib64/haswell/libpng16.so.16.38.0
+/usr/lib64/libpng16.so.16
+/usr/lib64/libpng16.so.16.38.0
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libpng16.so.16
+/usr/lib32/libpng16.so.16.38.0
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man3/libpng.3
+/usr/share/man/man3/libpngpf.3
+/usr/share/man/man5/png.5
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib64/libpng.a
+/usr/lib64/libpng16.a
